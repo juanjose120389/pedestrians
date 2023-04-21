@@ -1,0 +1,43 @@
+# Función para simular el peatón caminando por la carretera
+def caminar_carretera(v, d, luminarias):
+    distancia_peaton = 0  # El peatón comienza al principio de la carretera
+    while distancia_peaton < d:  # Mientras el peatón no llegue al final de la carretera
+        print(f"El peatón ha recorrido {distancia_peaton:.2f} metros")
+        # Comprobar si el peatón llegó a una luminaria
+        for i, luminaria in enumerate(luminarias):
+            distancia_luminaria = i * 100  # Suponemos que las luminarias están a 100 metros de distancia
+            luminaria(distancia_peaton, distancia_luminaria, v, i, luminarias)
+        # Avanzar al siguiente instante de tiempo
+        tiempo = 1  # Suponemos que cada iteración representa 1 segundo
+        distancia_peaton += v * tiempo
+
+# Lista de luminarias
+luminarias = []
+
+# Función para simular la detección de las luminarias cuando el peatón llega
+def detectar_luminaria(distancia_peaton, distancia_luminaria, v, indice_luminaria, luminarias):
+    umbral_confort = 10  # Suponemos que el umbral de confort es de 10 metros
+    if distancia_peaton <= distancia_luminaria:  # El peatón se acerca a la luminaria
+        if distancia_luminaria - distancia_peaton <= umbral_confort:  # Se cumple el umbral de confort
+            print("¡Luminaria encendida!")
+            # Código para encender la luminaria
+
+            # Si existe una siguiente luminaria en la lista, avisamos de la llegada del peatón
+            if indice_luminaria + 1 < len(luminarias):
+                print("Avisando a la siguiente luminaria...")
+                siguiente_luminaria = luminarias[indice_luminaria + 1]
+                siguiente_luminaria(distancia_peaton,distancia_luminaria, v, indice_luminaria + 1, luminarias)
+        else:
+            print("El peatón se acerca a la luminaria, pero no se cumple el umbral de confort")
+    else:  # El peatón se aleja de la luminaria
+        print("¡Luminaria apagada!")
+        # Código para apagar la luminaria
+
+# Creamos las luminarias y las añadimos a la lista
+for i in range(5):  # Suponemos que hay 5 luminarias en la carretera
+    luminarias.append(detectar_luminaria)
+
+# Simulamos el peatón caminando por la carretera
+v = 1.4  # Suponemos que el peatón camina a 1.4 metros por segundo
+d = 500  # Suponemos que la carretera tiene 500 metros de longitud
+caminar_carretera(v, d, luminarias)
