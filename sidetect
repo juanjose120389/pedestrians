@@ -1,0 +1,42 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 20 22:40:32 2023
+
+@author: Juanjo
+"""
+
+import time
+
+def detectar_luminaria(distancia_peaton, v, indice_luminaria, luminarias):
+    print(f"El peaton esta a una distancia de {distancia_peaton:.2f} m de la luminaria {indice_luminaria}")
+    time.sleep(0.5)  # Simular un retraso en la detección de la luminaria
+    
+    if distancia_peaton <= 10:
+        print("El peaton ha sido detectado por la luminaria.")
+        # Comunicar a la siguiente luminaria
+        if indice_luminaria < len(luminarias) - 1:
+            siguiente_luminaria(distancia_peaton, v, indice_luminaria + 1, luminarias)
+    else:
+        print("El peaton no ha sido detectado por la luminaria.")
+
+def siguiente_luminaria(distancia_peaton, v, indice_luminaria, luminarias):
+    distancia_luminaria = luminarias[indice_luminaria] - luminarias[indice_luminaria-1]
+    tiempo_luminaria = distancia_luminaria / v
+    
+    print(f"La siguiente luminaria está a una distancia de {distancia_luminaria:.2f} m.")
+    time.sleep(tiempo_luminaria)  # Simular tiempo de llegada a la siguiente luminaria
+    
+    detectar_luminaria(distancia_peaton, v, indice_luminaria, luminarias)
+
+
+# Definir la ubicación de las luminarias en la carretera
+luminarias = [0, 50, 100, 150, 200, 250, 300]
+
+# Definir la velocidad del peaton en m/s
+v = 1.4
+
+# Definir la distancia del peaton a la primera luminaria
+distancia_peaton = 40
+
+# Detectar la primera luminaria
+detectar_luminaria(distancia_peaton, v, 0, luminarias)
